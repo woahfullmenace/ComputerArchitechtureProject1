@@ -12,8 +12,8 @@ try {
     $exeFiles = Get-ChildItem -Path . -Recurse -Filter *.exe -File -ErrorAction SilentlyContinue
     if ($exeFiles) { $items += $exeFiles }
 
-    # Also remove matrix output stored in build\data3 (no extension)
-    $matrixPath = Join-Path -Path "build" -ChildPath "data3"
+    # Also remove matrix output stored in build\output\data3 (no extension)
+    $matrixPath = Join-Path -Path (Join-Path -Path "build" -ChildPath "output") -ChildPath "data3"
     if (Test-Path -LiteralPath $matrixPath) {
         $items += (Get-Item -LiteralPath $matrixPath)
     }
