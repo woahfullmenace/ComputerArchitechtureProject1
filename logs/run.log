@@ -1,0 +1,24 @@
+[02-11-2025 10:26:42.05] build-all started 
+[02-11-2025 10:26:42.15] gcc built pa_part1.exe exit=0 
+[02-11-2025 10:26:42.15] gcc built pa_part2.exe exit=0 
+[02-11-2025 10:26:42.15] gcc built pa_part3.exe exit=0 
+[02-11-2025 10:26:42.15] gcc built pa_part4.exe exit=0 
+[02-11-2025 10:26:42.15] gcc built pa_part5.exe exit=0 
+[02-11-2025 10:26:47.57] ran pa_part1.exe time=%VARNAME% 
+[02-11-2025 10:26:48.35] ran pa_part2.exe time=%VARNAME% 
+[02-11-2025 10:26:49.09] ran pa_part3.exe time=%VARNAME% 
+[02-11-2025 10:26:49.64] ran pa_part4.exe time=%VARNAME% 
+[02-11-2025 10:26:50.08] ran pa_part5.exe time=%VARNAME% 
+[02-11-2025 10:26:50.08] build-all finished 
+[02-11-2025 10:29:47.56] build-all started 
+[02-11-2025 10:29:47.66] gcc built pa_part1.exe exit=0 
+[02-11-2025 10:29:47.66] gcc built pa_part2.exe exit=0 
+[02-11-2025 10:29:47.66] gcc built pa_part3.exe exit=0 
+[02-11-2025 10:29:47.66] gcc built pa_part4.exe exit=0 
+[02-11-2025 10:29:47.66] gcc built pa_part5.exe exit=0 
+[02-11-2025 10:29:52.90] ran pa_part1.exe time=0.313352 
+[02-11-2025 10:29:53.66] ran pa_part2.exe time=0.470182 
+[02-11-2025 10:29:54.44] ran pa_part3.exe time=0.500427 
+[02-11-2025 10:29:54.96] ran pa_part4.exe time=0.240691 
+[02-11-2025 10:29:55.37] ran pa_part5.exe time=0.151223 
+[02-11-2025 10:29:55.38] build-all finished 

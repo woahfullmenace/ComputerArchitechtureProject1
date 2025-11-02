@@ -16,10 +16,25 @@ try {
     $outDir = Join-Path -Path "build" -ChildPath "output"
     $matrixPath1 = Join-Path -Path $outDir -ChildPath "data3"
     $matrixPath2 = Join-Path -Path $outDir -ChildPath "data3_part2"
+    $matrixPath3 = Join-Path -Path $outDir -ChildPath "data3_part3"
+    $matrixPath4 = Join-Path -Path $outDir -ChildPath "data3_part4"
+    $matrixPath5 = Join-Path -Path $outDir -ChildPath "data3_part5"
     if (Test-Path -LiteralPath $matrixPath1) { $items += (Get-Item -LiteralPath $matrixPath1) }
     if (Test-Path -LiteralPath $matrixPath2) { $items += (Get-Item -LiteralPath $matrixPath2) }
+    if (Test-Path -LiteralPath $matrixPath3) { $items += (Get-Item -LiteralPath $matrixPath3) }
+    if (Test-Path -LiteralPath $matrixPath4) { $items += (Get-Item -LiteralPath $matrixPath4) }
+    if (Test-Path -LiteralPath $matrixPath5) { $items += (Get-Item -LiteralPath $matrixPath5) }
 
     if (-not $items -or $items.Count -eq 0) {
+        # Also remove explanation directory if present
+        $expl = Join-Path -Path "build" -ChildPath "explaination"
+        if (Test-Path -LiteralPath $expl) {
+            if ($DryRun) {
+                Write-Host "[DRY] Would delete directory: $expl"
+            } else {
+                try { Remove-Item -LiteralPath $expl -Recurse -Force -ErrorAction Stop; Write-Host "Deleted directory: $expl" } catch { Write-Warning "Failed to delete directory: $expl -> $($_.Exception.Message)" }
+            }
+        }
         Write-Host "Nothing to clean."
         exit 0
     }
