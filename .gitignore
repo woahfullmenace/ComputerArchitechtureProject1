@@ -5,3 +5,9 @@
 Project 1 Screenshots/
 project 1 screenshots/
 
+# Ignore build output directory
+build/
+
+# Ignore logs directory
+logs/
+

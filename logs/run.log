@@ -46,3 +46,15 @@
 [02-11-2025 11:00:33.53] ran pa_part4.exe time=0.229508 
 [02-11-2025 11:00:33.94] ran pa_part5.exe time=0.131722 
 [02-11-2025 11:00:33.94] build-all finished 
+[02-11-2025 11:07:08.97] build-all started 
+[02-11-2025 11:07:09.06] gcc built pa_part1.exe exit=0 
+[02-11-2025 11:07:09.06] gcc built pa_part2.exe exit=0 
+[02-11-2025 11:07:09.06] gcc built pa_part3.exe exit=0 
+[02-11-2025 11:07:09.06] gcc built pa_part4.exe exit=0 
+[02-11-2025 11:07:09.06] gcc built pa_part5.exe exit=0 
+[02-11-2025 11:07:14.29] ran pa_part1.exe time=0.401529 
+[02-11-2025 11:07:15.00] ran pa_part2.exe time=0.423451 
+[02-11-2025 11:07:15.69] ran pa_part3.exe time=0.421908 
+[02-11-2025 11:07:16.22] ran pa_part4.exe time=0.242867 
+[02-11-2025 11:07:16.64] ran pa_part5.exe time=0.139349 
+[02-11-2025 11:07:16.64] build-all finished 

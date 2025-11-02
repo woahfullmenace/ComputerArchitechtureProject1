@@ -1,11 +1,11 @@
 Part 6: Timing Comparison and Explanation
 
 Measured times (seconds):
-  Part 1: 0.453162
-  Part 2: 0.429466
-  Part 3: 0.435754
-  Part 4: 0.229508
-  Part 5: 0.131722
+  Part 1: 0.401529
+  Part 2: 0.423451
+  Part 3: 0.421908
+  Part 4: 0.242867
+  Part 5: 0.139349
 
 Why times differ:
 - Parallelism vs. core count: More threads use more CPU cores and reduce wall time up to available physical cores.
