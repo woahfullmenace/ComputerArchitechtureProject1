@@ -7,10 +7,14 @@ for /r %%F in (*.exe) do (
   del /f /q "%%F" >nul 2>&1
 )
 
-REM Also remove matrix output in build\output\data3 if present
+REM Also remove matrix outputs in build\output if present
 if exist "build\output\data3" (
   echo Deleting "build\output\data3"
   del /f /q "build\output\data3" >nul 2>&1
+)
+if exist "build\output\data3_part2" (
+  echo Deleting "build\output\data3_part2"
+  del /f /q "build\output\data3_part2" >nul 2>&1
 )
 
 echo Done.
