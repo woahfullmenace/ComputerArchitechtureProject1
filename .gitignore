@@ -1,3 +1,7 @@
 # Ignore VS Code workspace settings
 .vscode/
 
+# Ignore local screenshots folder(s) for Project 1
+Project 1 Screenshots/
+project 1 screenshots/
+

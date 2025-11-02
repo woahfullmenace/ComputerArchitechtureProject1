@@ -135,6 +135,7 @@ typedef struct {
     const double *b;
     double *c;
     size_t n;
+    double compute_time; // seconds spent computing inside the thread
 } thread_args_t;
 
 static void matmul_rows(const double *a, const double *b, double *c, size_t n, size_t r0, size_t r1) {
@@ -156,16 +157,22 @@ static void matmul_rows(const double *a, const double *b, double *c, size_t n, s
 #ifdef _WIN32
 static unsigned __stdcall matmul_thread(void *arg) {
     thread_args_t *t = (thread_args_t *)arg;
+    double t0 = now_seconds();
     // full range 0..N
     for (size_t i = 0; i < t->n * t->n; ++i) t->c[i] = 0.0;
     matmul_rows(t->a, t->b, t->c, t->n, 0, t->n);
+    double t1 = now_seconds();
+    t->compute_time = t1 - t0;
     return 0;
 }
 #else
 static void *matmul_thread(void *arg) {
     thread_args_t *t = (thread_args_t *)arg;
+    double t0 = now_seconds();
     for (size_t i = 0; i < t->n * t->n; ++i) t->c[i] = 0.0;
     matmul_rows(t->a, t->b, t->c, t->n, 0, t->n);
+    double t1 = now_seconds();
+    t->compute_time = t1 - t0;
     return NULL;
 }
 #endif
@@ -189,6 +196,7 @@ int main(int argc, char **argv) {
 
     thread_args_t args;
     args.a = mat1; args.b = mat2; args.c = mat3; args.n = N;
+    args.compute_time = 0.0;
 
     double t0 = now_seconds();
 #ifdef _WIN32
@@ -211,12 +219,15 @@ int main(int argc, char **argv) {
 #endif
     double t1 = now_seconds();
     double elapsed = t1 - t0;
+    double overhead = elapsed - args.compute_time;
+    if (overhead < 0) overhead = 0.0;
 
     if (ensure_parent_dir(out) != 0) { free(mat1); free(mat2); free(mat3); return 1; }
     if (write_matrix(out, mat3, N) != 0) { free(mat1); free(mat2); free(mat3); return 1; }
 
     printf("%lf %lf %lf %lf\n", mat3[6 * N + 0], mat3[5 * N + 3], mat3[5 * N + 4], mat3[901 * N + 7]);
     fprintf(stderr, "Multiply time (Part 3, 1 thread): %.6f seconds\n", elapsed);
+    fprintf(stderr, "Thread overhead (create/join): %.6f seconds\n", overhead);
 
     free(mat1); free(mat2); free(mat3);
     return 0;

@@ -101,6 +101,7 @@ typedef struct {
     double *c;
     size_t n;
     size_t r0, r1; // row range [r0, r1)
+    double compute_time; // seconds for this thread's work
 } thread_args_t;
 
 static void matmul_rows(const double *a, const double *b, double *c, size_t n, size_t r0, size_t r1) {
@@ -120,13 +121,19 @@ static void matmul_rows(const double *a, const double *b, double *c, size_t n, s
 #ifdef _WIN32
 static unsigned __stdcall worker(void *arg) {
     thread_args_t *t = (thread_args_t *)arg;
+    double t0 = now_seconds();
     matmul_rows(t->a, t->b, t->c, t->n, t->r0, t->r1);
+    double t1 = now_seconds();
+    t->compute_time = t1 - t0;
     return 0;
 }
 #else
 static void *worker(void *arg) {
     thread_args_t *t = (thread_args_t *)arg;
+    double t0 = now_seconds();
     matmul_rows(t->a, t->b, t->c, t->n, t->r0, t->r1);
+    double t1 = now_seconds();
+    t->compute_time = t1 - t0;
     return NULL;
 }
 #endif
@@ -146,8 +153,8 @@ int main(int argc, char **argv) {
 
     thread_args_t args[2];
     size_t mid = N/2; // 500
-    args[0] = (thread_args_t){ mat1, mat2, mat3, N, 0, mid };
-    args[1] = (thread_args_t){ mat1, mat2, mat3, N, mid, N };
+    args[0] = (thread_args_t){ mat1, mat2, mat3, N, 0, mid, 0.0 };
+    args[1] = (thread_args_t){ mat1, mat2, mat3, N, mid, N, 0.0 };
 
     double t0 = now_seconds();
 #ifdef _WIN32
@@ -165,12 +172,17 @@ int main(int argc, char **argv) {
 #endif
     double t1 = now_seconds();
     double elapsed = t1 - t0;
+    double critical = args[0].compute_time;
+    if (args[1].compute_time > critical) critical = args[1].compute_time;
+    double overhead = elapsed - critical;
+    if (overhead < 0) overhead = 0.0;
 
     if (ensure_parent_dir(out) != 0) { free(mat1); free(mat2); free(mat3); return 1; }
     if (write_matrix(out, mat3, N) != 0) { free(mat1); free(mat2); free(mat3); return 1; }
 
     printf("%lf %lf %lf %lf\n", mat3[6 * N + 0], mat3[5 * N + 3], mat3[5 * N + 4], mat3[901 * N + 7]);
     fprintf(stderr, "Multiply time (Part 4, 2 threads): %.6f seconds\n", elapsed);
+    fprintf(stderr, "Thread overhead (create/join + scheduling): %.6f seconds\n", overhead);
 
     free(mat1); free(mat2); free(mat3);
     return 0;

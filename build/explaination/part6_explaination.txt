@@ -1,0 +1,20 @@
+Part 6: Timing Comparison and Explanation
+
+Measured times (seconds):
+  Part 1: 0.453162
+  Part 2: 0.429466
+  Part 3: 0.435754
+  Part 4: 0.229508
+  Part 5: 0.131722
+
+Why times differ:
+- Parallelism vs. core count: More threads use more CPU cores and reduce wall time up to available physical cores.
+- Memory hierarchy and bandwidth: Multiple threads increase DRAM traffic; speedup tapers when memory bandwidth is saturated.
+- Cache effects: Shared last-level cache between threads can reduce locality and add contention.
+- Threading overhead and scheduling: Creating/joining threads adds small overhead; OS scheduling adds variance.
+- SMT/Hyper-Threading: Threads beyond physical cores have diminishing returns since execution units are shared.
+
+Expected trend:
+- Parts 1, 2, 3 are similar (single-threaded work; Part 3 adds small thread overhead).
+- Part 4 (2 threads) ~up to 2x faster on 2+ core CPUs.
+- Part 5 (4 threads) ~up to 4x faster on 4+ core CPUs, limited by memory bandwidth/cache.

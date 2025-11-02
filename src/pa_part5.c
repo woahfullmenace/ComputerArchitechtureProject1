@@ -65,16 +65,16 @@ static int write_matrix(const char *path, const double *mat, size_t n) {
     fclose(f); return 0;
 }
 
-typedef struct { const double *a; const double *b; double *c; size_t n; size_t r0, r1; } thread_args_t;
+typedef struct { const double *a; const double *b; double *c; size_t n; size_t r0, r1; double compute_time; } thread_args_t;
 
 static void matmul_rows(const double *a, const double *b, double *c, size_t n, size_t r0, size_t r1) {
     for (size_t i=r0;i<r1;++i){ const size_t io=i*n; for(size_t j=0;j<n;++j) c[io+j]=0.0; for(size_t k=0;k<n;++k){ const double aik=a[io+k]; const size_t ko=k*n; for(size_t j=0;j<n;++j){ c[io+j]+=aik*b[ko+j]; } } }
 }
 
 #ifdef _WIN32
-static unsigned __stdcall worker(void *arg){ thread_args_t *t=(thread_args_t*)arg; matmul_rows(t->a,t->b,t->c,t->n,t->r0,t->r1); return 0; }
+static unsigned __stdcall worker(void *arg){ thread_args_t *t=(thread_args_t*)arg; double t0=now_seconds(); matmul_rows(t->a,t->b,t->c,t->n,t->r0,t->r1); double t1=now_seconds(); t->compute_time=t1-t0; return 0; }
 #else
-static void *worker(void *arg){ thread_args_t *t=(thread_args_t*)arg; matmul_rows(t->a,t->b,t->c,t->n,t->r0,t->r1); return NULL; }
+static void *worker(void *arg){ thread_args_t *t=(thread_args_t*)arg; double t0=now_seconds(); matmul_rows(t->a,t->b,t->c,t->n,t->r0,t->r1); double t1=now_seconds(); t->compute_time=t1-t0; return NULL; }
 #endif
 
 int main(int argc, char **argv){
@@ -87,10 +87,10 @@ int main(int argc, char **argv){
     if(read_matrix(in2,mat2,N)!=0){ free(mat1); free(mat2); free(mat3); return 1; }
 
     thread_args_t args[4]; size_t q=N/4; // 250
-    args[0]=(thread_args_t){mat1,mat2,mat3,N,0,q};
-    args[1]=(thread_args_t){mat1,mat2,mat3,N,q,2*q};
-    args[2]=(thread_args_t){mat1,mat2,mat3,N,2*q,3*q};
-    args[3]=(thread_args_t){mat1,mat2,mat3,N,3*q,N};
+    args[0]=(thread_args_t){mat1,mat2,mat3,N,0,q,0.0};
+    args[1]=(thread_args_t){mat1,mat2,mat3,N,q,2*q,0.0};
+    args[2]=(thread_args_t){mat1,mat2,mat3,N,2*q,3*q,0.0};
+    args[3]=(thread_args_t){mat1,mat2,mat3,N,3*q,N,0.0};
 
     double t0=now_seconds();
 #ifdef _WIN32
@@ -100,11 +100,13 @@ int main(int argc, char **argv){
     pthread_t th[4]; for(int i=0;i<4;++i) pthread_create(&th[i],NULL,worker,&args[i]); for(int i=0;i<4;++i) pthread_join(th[i],NULL);
 #endif
     double t1=now_seconds(); double elapsed=t1-t0;
+    double critical=args[0].compute_time; if(args[1].compute_time>critical) critical=args[1].compute_time; if(args[2].compute_time>critical) critical=args[2].compute_time; if(args[3].compute_time>critical) critical=args[3].compute_time; double overhead=elapsed-critical; if(overhead<0) overhead=0.0;
 
     if(ensure_parent_dir(out)!=0){ free(mat1); free(mat2); free(mat3); return 1; }
     if(write_matrix(out,mat3,N)!=0){ free(mat1); free(mat2); free(mat3); return 1; }
     printf("%lf %lf %lf %lf\n", mat3[6*N+0], mat3[5*N+3], mat3[5*N+4], mat3[901*N+7]);
     fprintf(stderr,"Multiply time (Part 5, 4 threads): %.6f seconds\n", elapsed);
+    fprintf(stderr,"Thread overhead (create/join + scheduling): %.6f seconds\n", overhead);
     free(mat1); free(mat2); free(mat3); return 0;
 }
 
