@@ -16,5 +16,9 @@ if exist "build\output\data3_part2" (
   echo Deleting "build\output\data3_part2"
   del /f /q "build\output\data3_part2" >nul 2>&1
 )
+if exist "build\output\data3_part3" (
+  echo Deleting "build\output\data3_part3"
+  del /f /q "build\output\data3_part3" >nul 2>&1
+)
 
 echo Done.

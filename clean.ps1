@@ -16,8 +16,10 @@ try {
     $outDir = Join-Path -Path "build" -ChildPath "output"
     $matrixPath1 = Join-Path -Path $outDir -ChildPath "data3"
     $matrixPath2 = Join-Path -Path $outDir -ChildPath "data3_part2"
+    $matrixPath3 = Join-Path -Path $outDir -ChildPath "data3_part3"
     if (Test-Path -LiteralPath $matrixPath1) { $items += (Get-Item -LiteralPath $matrixPath1) }
     if (Test-Path -LiteralPath $matrixPath2) { $items += (Get-Item -LiteralPath $matrixPath2) }
+    if (Test-Path -LiteralPath $matrixPath3) { $items += (Get-Item -LiteralPath $matrixPath3) }
 
     if (-not $items -or $items.Count -eq 0) {
         Write-Host "Nothing to clean."
