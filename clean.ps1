@@ -12,11 +12,12 @@ try {
     $exeFiles = Get-ChildItem -Path . -Recurse -Filter *.exe -File -ErrorAction SilentlyContinue
     if ($exeFiles) { $items += $exeFiles }
 
-    # Also remove matrix output stored in build\data3 (no extension)
-    $matrixPath = Join-Path -Path "build" -ChildPath "data3"
-    if (Test-Path -LiteralPath $matrixPath) {
-        $items += (Get-Item -LiteralPath $matrixPath)
-    }
+    # Also remove matrix outputs stored in build\output (no extension)
+    $outDir = Join-Path -Path "build" -ChildPath "output"
+    $matrixPath1 = Join-Path -Path $outDir -ChildPath "data3"
+    $matrixPath2 = Join-Path -Path $outDir -ChildPath "data3_part2"
+    if (Test-Path -LiteralPath $matrixPath1) { $items += (Get-Item -LiteralPath $matrixPath1) }
+    if (Test-Path -LiteralPath $matrixPath2) { $items += (Get-Item -LiteralPath $matrixPath2) }
 
     if (-not $items -or $items.Count -eq 0) {
         Write-Host "Nothing to clean."

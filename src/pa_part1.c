@@ -170,7 +170,7 @@ static void matmul(const double *a, const double *b, double *c, size_t n) {
 int main(int argc, char **argv) {
     const char *in1 = (argc > 1) ? argv[1] : "data/data1/data1";
     const char *in2 = (argc > 2) ? argv[2] : "data/data2/data2";
-    const char *out = (argc > 3) ? argv[3] : "build/data3";
+    const char *out = (argc > 3) ? argv[3] : "build/output/data3";
 
     double *mat1 = (double *)malloc(sizeof(double) * N * N);
     double *mat2 = (double *)malloc(sizeof(double) * N * N);
@@ -207,4 +207,3 @@ int main(int argc, char **argv) {
     free(mat1); free(mat2); free(mat3);
     return 0;
 }
-

@@ -21,14 +21,14 @@ Build into `build\matmul.exe` using one of:
   - `build.bat`
 
 - Manual (MSVC Developer Command Prompt):
-  - `cl /O2 /W4 /nologo /Fe:build\matmul.exe "src\progamming assignment part 1.c"`
+  - `cl /O2 /W4 /nologo /Fe:build\matmul.exe src\pa_part1.c`
 
 - Manual (MinGW-w64 GCC):
-  - `gcc -O3 -Wall -Wextra -std=c11 -o build\matmul.exe "src/progamming assignment part 1.c"`
+  - `gcc -O3 -Wall -Wextra -std=c11 -o build\matmul.exe src/pa_part1.c`
 
 ### Run
 
-Defaults to the provided data paths and writes `build\\data3`:
+Defaults to the provided data paths and writes `build\\output\\data3`:
 
 ```
 build\matmul.exe
@@ -37,7 +37,7 @@ build\matmul.exe
 Or specify explicit paths: `matmul.exe <data1> <data2> <output>`
 
 ```
-build\matmul.exe data\data1\data1 data\data2\data2 build\data3
+build\\matmul.exe data\\data1\\data1 data\\data2\\data2 build\\output\\data3
 ```
 
 Program output:
@@ -48,7 +48,7 @@ Note: The naive O(N^3) multiply for 1000x1000 may take noticeable time on some m
 
 ### Clean
 
-To remove generated artifacts (.exe files and the matrix output `build\data3`):
+To remove generated artifacts (.exe files and the matrix output `build\\output\\data3`):
 
 - PowerShell (with optional dry run):
   - `powershell -ExecutionPolicy Bypass -File .\clean.ps1`  
@@ -61,7 +61,11 @@ To remove generated artifacts (.exe files and the matrix output `build\data3`):
 
 Verbose printing of matrices and steps is controlled by the `DEBUG` macro. By default it is disabled (`DEBUG=0`). Enable it at compile time to print all steps and full matrices (very large output for 1000x1000):
 
-- MSVC: `cl /O2 /W4 /nologo /DDEBUG=1 /Fe:build\matmul.exe "src\progamming assignment part 1.c"`
-- GCC: `gcc -O3 -Wall -Wextra -std=c11 -DDEBUG=1 -o build\matmul.exe "src/progamming assignment part 1.c"`
+- MSVC: `cl /O2 /W4 /nologo /DDEBUG=1 /Fe:build\matmul.exe src\pa_part1.c`
+- GCC: `gcc -O3 -Wall -Wextra -std=c11 -DDEBUG=1 -o build\matmul.exe src/pa_part1.c`
 
 The final required stdout verification line always prints regardless of `DEBUG`.
+
+
+
+
