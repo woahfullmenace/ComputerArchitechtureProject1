@@ -20,5 +20,17 @@ if exist "build\output\data3_part3" (
   echo Deleting "build\output\data3_part3"
   del /f /q "build\output\data3_part3" >nul 2>&1
 )
+if exist "build\output\data3_part4" (
+  echo Deleting "build\output\data3_part4"
+  del /f /q "build\output\data3_part4" >nul 2>&1
+)
+if exist "build\output\data3_part5" (
+  echo Deleting "build\output\data3_part5"
+  del /f /q "build\output\data3_part5" >nul 2>&1
+)
+if exist "build\explaination" (
+  echo Deleting "build\explaination" (Part 6 explanation)
+  rmdir /s /q "build\explaination" >nul 2>&1
+)
 
 echo Done.
